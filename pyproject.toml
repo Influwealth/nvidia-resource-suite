@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "nvidia-resource-suite"
+version = "2.0.0"
+description = "Public global educational platform built on the full NVIDIA technology stack"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.11"
+keywords = ["nvidia", "omniverse", "nim", "education", "world-building", "ai", "gpu"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Education",
+]
+
+[project.urls]
+Homepage = "https://github.com/influwealth/nvidia-resource-suite"
+Documentation = "https://github.com/influwealth/nvidia-resource-suite/tree/main/docs"
+Issues = "https://github.com/influwealth/nvidia-resource-suite/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nim*", "omniverse*", "triton*", "tensorrt*", "nemo*", "isaac*", "warp*", "modulus*", "earth2*", "rapids*", "education*", "mcp_server*", "examples*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

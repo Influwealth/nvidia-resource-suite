@@ -1,18 +1,89 @@
 version: "3.9"
+
+# ============================================================
+# NVIDIA Resource Suite — Full Stack
+# docker-compose up --gpus all
+# ============================================================
+
 services:
-  nvidia-resource-suite:
+
+  # --- Main API Server ---
+  api:
     build: .
+    command: uvicorn api_server:app --host 0.0.0.0 --port 7760 --reload
     ports:
       - "7760:7760"
-    environment:
-      - NVIDIA_API_KEY=${NVIDIA_API_KEY}
-      - NVIDIA_NIM_BASE_URL=${NVIDIA_NIM_BASE_URL:-https://integrate.api.nvidia.com/v1}
-      - OMNIVERSE_NUCLEUS_URL=${OMNIVERSE_NUCLEUS_URL:-omniverse://localhost}
-      - DEEPFLEX_BASE_URL=${DEEPFLEX_BASE_URL:-http://host.docker.internal:8000}
-      - NVIDIA_SUITE_PORT=7760
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7760/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+    env_file: .env
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - .:/app
+    networks:
+      - nvidia-net
+
+  # --- NVIDIA Triton Inference Server ---
+  triton:
+    image: nvcr.io/nvidia/tritonserver:24.05-py3
+    command: tritonserver --model-repository=/models --allow-metrics=true
+    ports:
+      - "8000:8000"   # HTTP
+      - "8001:8001"   # gRPC
+      - "8002:8002"   # Metrics
+    volumes:
+      - ./model_repository:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    networks:
+      - nvidia-net
+    profiles: [triton]
+
+  # --- Omniverse Nucleus (local dev) ---
+  nucleus:
+    image: nvcr.io/nvidia/omniverse/nucleus-server:latest
+    ports:
+      - "3009:3009"
+      - "3010:3010"
+    volumes:
+      - nucleus_data:/nucleus
+    networks:
+      - nvidia-net
+    profiles: [omniverse]
+
+  # --- Vector DB for RAG ---
+  chromadb:
+    image: chromadb/chroma:latest
+    ports:
+      - "8020:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    networks:
+      - nvidia-net
+
+  # --- MCP Server ---
+  mcp:
+    build: .
+    command: python mcp_server/nvidia_mcp_server.py
+    env_file: .env
+    stdin_open: true
+    tty: true
+    networks:
+      - nvidia-net
+    profiles: [mcp]
+
+volumes:
+  nucleus_data:
+  chroma_data:
+
+networks:
+  nvidia-net:
+    driver: bridge

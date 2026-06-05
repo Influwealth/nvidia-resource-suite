@@ -1,114 +1,158 @@
-# NVIDIA Resource Suite
+# NVIDIA Resource Suite — Public Global Edition
 
-Full NVIDIA integration suite for the Influwealth Sovereign Automation System and
-digital world-building platform. Supports free and accessible education through
-AI-powered interactive environments.
+> Open-source · Educational · Sovereign Compute  
+> Powered by the full NVIDIA technology stack.
 
-## Vision
+**nvidia-resource-suite** is a free, open-source platform that brings the entire NVIDIA AI and
+simulation stack to educators, world-builders, students, researchers, and sovereign communities
+everywhere on Earth.
 
-We are building **World Interactive Origins** — an AI-powered, GPU-accelerated
-educational platform where students explore history, science, and culture through
-immersive 3D worlds rendered in real-time by NVIDIA Omniverse.
+---
 
-> "The best education is the one that meets every student where they are — for free."
+## What This Is
 
-NVIDIA's GPU infrastructure, NIM inference microservices, and Omniverse world-building
-SDK give us the compute backbone to make this vision real.
+This repo is the foundation for:
 
-## Architecture
+- **World Interactive Origins** — AI-powered educational digital civilizations
+- **Omniverse World-Building** — Photorealistic 3D worlds with Universal Scene Description (USD)
+- **NIM AI Tutoring** — Free, GPU-accelerated AI for every student on Earth
+- **Earth Simulation** — Climate, weather, and physics at planetary scale
+- **Sovereign Compute** — Decentralized, community-owned GPU infrastructure
+- **Open Learning** — Curricula, guides, and examples for all ages and all nations
 
-```
-NVIDIA Resource Suite (port 7760)
-├── NIM Client          — AI inference via api.nvidia.com (LLM, vision, embedding)
-├── GPU Scheduler       — Job queue for CUDA/rendering workloads
-├── MCP Server          — Model Context Protocol server exposing NVIDIA tools
-├── Omniverse Bridge    — USD scene building, Kit SDK, Nucleus integration
-├── Education Platform  — Curriculum management, interactive world delivery
-└── FastAPI HTTP API    — SAP-compliant HTTP interface (port 7760)
-```
+---
 
-## SAP Integration
-- **SAP Node ID**: `nvidia-resource-suite`
-- **Port**: 7760
-- **Managed by**: DeepFlex Supervisor (port 8000)
-- **Feeds**: TurboQuant Core, qre-agent-platform, sovereign-mesh capsules
+## Full Technology Stack
+
+| NVIDIA System | Module | Purpose |
+|---------------|--------|---------|
+| Omniverse Kit / Nucleus / Farm | `omniverse/` | 3D world-building, asset streaming, render dispatch |
+| Omniverse Replicator | `omniverse/replicator.py` | Synthetic data generation |
+| Omniverse Audio2Face / ACE | `omniverse/audio2face.py` | Avatar animation |
+| PhysX | `omniverse/physx.py` | Real-time physics |
+| NIM — LLM | `nim/llm.py` | Chat, reasoning, tutoring |
+| NIM — Embedding | `nim/embedding.py` | Semantic search, RAG |
+| NIM — Vision | `nim/vision.py` | Image understanding |
+| NIM — Audio | `nim/audio.py` | Speech-to-text, text-to-speech |
+| NIM — RAG | `nim/rag.py` | Retrieval-augmented generation |
+| NeMo Guardrails NIM | `nim/guardrails.py` | Safe AI for student interactions |
+| Triton Inference Server | `triton/` | Multi-model serving, dynamic batching |
+| TensorRT / TensorRT-LLM | `tensorrt/` | Model optimization, FP8/INT4 quantization |
+| NeMo Framework | `nemo/` | LLM, ASR, TTS, RAG fine-tuning |
+| Isaac Sim / ROS | `isaac/` | Robotics simulation |
+| NVIDIA Warp | `warp/` | GPU-accelerated Python physics kernels |
+| NVIDIA Modulus | `modulus/` | Physics-ML, PDE solvers, digital twins |
+| Earth-2 (CorrDiff / FourCastNet) | `earth2/` | Climate and weather simulation |
+| RAPIDS (cuDF / cuML / cuGraph) | `rapids/` | GPU-accelerated data science |
+| CUDA Runtime | `cuda/` | Low-level GPU memory and kernel management |
+
+---
 
 ## Quick Start
 
 ```bash
-# 1. Install dependencies
+git clone https://github.com/influwealth/nvidia-resource-suite
+cd nvidia-resource-suite
+cp .env.example .env
+# Edit .env — add your NVIDIA_API_KEY
 pip install -r requirements.txt
-
-# 2. Set NVIDIA API key (get from build.nvidia.com)
-export NVIDIA_API_KEY=nvapi-XXXX
-
-# 3. Start the HTTP API server
-uvicorn api_server:app --port 7760 --reload
-
-# 4. Start the MCP server (for Claude integration)
-python -m mcp_server.nvidia_mcp_server
-
-# 5. (Optional) Start with Docker
-docker-compose up
+python examples/hello_nim.py
 ```
 
-## NVIDIA API Key
+---
 
-Get your free API key at: https://build.nvidia.com/explore/discover
+## Examples
 
-Set it as:
 ```bash
-export NVIDIA_API_KEY=nvapi-YOUR_KEY_HERE
-# or add to .env file (never commit .env)
+# Say hello to a NIM LLM
+python examples/hello_nim.py
+
+# Build a 3D world scene
+python examples/build_world.py --theme east-flatbush
+
+# Run a climate simulation
+python examples/climate_demo.py --region east-coast --days 7
+
+# Launch an interactive education session
+python examples/education_demo.py --world silk-road --age-group middle-school
+
+# Start the full API server
+uvicorn api_server:app --host 0.0.0.0 --port 7760 --reload
 ```
 
-## Services
+---
 
-| Service | Description | Key |
-|---------|-------------|-----|
-| NIM (NVIDIA Inference Microservices) | LLM, vision, embedding inference | NVIDIA_API_KEY |
-| Omniverse Nucleus | 3D asset server | OMNIVERSE_NUCLEUS_URL |
-| Omniverse Farm | GPU render farm | OMNIVERSE_FARM_URL |
+## World Themes
 
-## Supported NIM Models
+| World | Period | Anchor Site | Subjects |
+|-------|--------|-------------|----------|
+| East Flatbush Origins | 1960s–present | 458 E 94th St, Brooklyn | Community, Music, History |
+| Greenville Sovereign | Pre-1865–present | 53-acre NC site | Land Rights, Economics, Governance |
+| Ancient Silk Road | 100 BCE–1450 CE | Central Asia corridor | Trade, Culture, Science |
+| Harlem Renaissance | 1920s–1930s | Harlem, New York | Art, Literature, Civil Rights |
+| Great Migration | 1910–1970 | Southern US → Northern cities | History, Social Justice |
+| Pre-Columbian Americas | Pre-1492 | Across the Americas | Archaeology, Science, Civilization |
 
-### Language Models
-- `meta/llama-3.1-70b-instruct` — General instruction following
-- `nvidia/llama-3.1-nemotron-70b-instruct` — NVIDIA-tuned Llama
-- `microsoft/phi-3-medium-128k-instruct` — Long-context model
-- `mistralai/mixtral-8x7b-instruct-v0.1` — Fast MoE model
+---
 
-### Embedding Models
-- `nvidia/nv-embedqa-e5-v5` — Q&A optimized embeddings
-- `snowflake/arctic-embed-l` — Large embedding model
+## Free Access — Always
 
-### Vision Models
-- `microsoft/phi-3-vision-128k-instruct` — Vision + language
-- `nvidia/neva-22b` — NVIDIA vision-language model
+GPU-powered education must be free. This platform is:
 
-### Specialized
-- `nvidia/rerank-qa-mistral-4b` — Reranking for RAG
-- `nvcr.io/nvidia/nemotron-nano-vl-8b-v1` — Compact vision-language
+- **Free** for all students and educators, globally
+- **Open-source** — Apache 2.0 license
+- **Deployable** on Akash Network decentralized compute
+- **Grant-eligible** — NVIDIA Inception Program, NSF STEM, community funds
+- **Multilingual** — 8+ languages in active development
 
-## Education Mission
+---
 
-The World Interactive Origins platform provides:
+## Architecture
 
-1. **Free access** — No paywalls. GPU costs covered by sovereign infrastructure.
-2. **Interactive 3D worlds** — NVIDIA Omniverse scenes for every major historical period
-3. **AI tutoring** — NIM-powered Socratic dialogue in every world
-4. **Universal design** — Accessible on web, mobile, VR, and low-bandwidth connections
-5. **Open curriculum** — Community-contributed lesson plans
+```
+Student / Researcher / Educator
+        |
+        v
+nvidia-resource-suite API (port 7760)
+        |
+  +-----+-----+--------+----------+--------+
+  |           |        |          |        |
+ NIM       Omniverse Triton    Earth-2   NeMo
+ (LLM/     (3D/USD)  (Serving) (Climate) (Framework)
+  Embed/
+  Vision)
+        |
+        v
+DeepFlex Supervisor (port 8000) — MONAD NODE_ALPHA
+        |
+  +-----+-----+
+  |           |
+Argus       WealthBridge OS
+(Infra)     (Business Logic)
+```
+
+---
 
 ## Documentation
 
-- [Setup Guide](docs/SETUP.md)
-- [API Reference](docs/API.md)
-- [Omniverse Integration](docs/OMNIVERSE.md)
-- [Education Platform](docs/EDUCATION.md)
-- [MCP Server](docs/MCP_SERVER.md)
-- [World Interactive Origins Plan](WORLD_INTERACTIVE_ORIGINS.md)
+- [Getting Started](docs/getting-started.md)
+- [Architecture](docs/architecture.md)
+- [Omniverse World-Building Guide](docs/omniverse-guide.md)
+- [NIM Integration Guide](docs/nim-guide.md)
+- [World-Building Templates](docs/world-building-guide.md)
+- [Contributing](docs/contributing.md)
+
+---
+
+## Community
+
+- **Educators**: education@influwealth.com — free accounts, curriculum tools
+- **Researchers**: Open issues and PRs welcome
+- **Community Partners**: See [WORLD_INTERACTIVE_ORIGINS.md](WORLD_INTERACTIVE_ORIGINS.md)
+- **NVIDIA Partners**: bd@influwealth.com
+
+---
 
 ## License
 
-MIT — Free to use, fork, and build upon.
+Apache 2.0 — see [LICENSE](LICENSE).
