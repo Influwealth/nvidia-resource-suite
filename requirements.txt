@@ -1,3 +1,87 @@
+# ============================================================
+# NVIDIA Resource Suite — Public Global Edition
+# Full dependency list covering all NVIDIA technology modules
+# ============================================================
+
+# --- Web API ---
 fastapi>=0.110.0
-uvicorn>=0.29.0
-pydantic>=2.0.0
+uvicorn[standard]>=0.29.0
+httpx>=0.27.0
+requests>=2.31.0
+python-multipart>=0.0.9
+sse-starlette>=2.0.0
+
+# --- Core AI / ML ---
+numpy>=1.26.0
+scipy>=1.13.0
+pandas>=2.2.0
+scikit-learn>=1.4.0
+
+# --- NIM (API-based — no pip install for inference, uses REST) ---
+openai>=1.30.0          # NIM uses OpenAI-compatible API
+tiktoken>=0.7.0
+pillow>=10.3.0          # image preprocessing for vision NIM
+soundfile>=0.12.1       # audio NIM preprocessing
+numpy>=1.26.0
+
+# --- Triton Inference Server client ---
+tritonclient[all]>=2.45.0
+
+# --- TensorRT (requires CUDA toolkit — install separately) ---
+# tensorrt>=10.0.0        # uncomment after installing CUDA toolkit
+# tensorrt-llm>=0.10.0    # uncomment for TRT-LLM support
+
+# --- NeMo Framework ---
+# nemo-toolkit[all]>=2.0.0  # uncomment for full NeMo (large install)
+nemo-toolkit[asr,tts]>=2.0.0
+
+# --- NVIDIA Warp ---
+warp-lang>=1.1.0
+
+# --- NVIDIA Modulus ---
+# nvidia-modulus>=0.7.0    # uncomment — requires CUDA
+einops>=0.8.0
+
+# --- Earth-2 (earth2mip) ---
+# earth2mip>=0.2.0         # uncomment — large model weights
+torch>=2.3.0
+torchvision>=0.18.0
+torchaudio>=2.3.0
+
+# --- RAPIDS (cuDF / cuML / cuGraph — requires CUDA 12.x) ---
+# Install via: conda install -c rapidsai cudf cuml cugraph
+# or: pip install cudf-cu12 cuml-cu12 cugraph-cu12
+# These are listed here for documentation; pip install may fail without CUDA
+
+# --- Omniverse Python (requires Kit SDK) ---
+# omni.client is included with Omniverse Kit — not on PyPI
+# pxr (USD Python bindings) installed with Omniverse or via usd-core:
+usd-core>=24.3
+
+# --- Isaac Sim (install via NVIDIA Launcher or NGC) ---
+# isaacsim is not on PyPI; see docs/getting-started.md
+
+# --- Database / Vector Store ---
+chromadb>=0.5.0
+supabase>=2.4.0
+pgvector>=0.3.0
+
+# --- Utilities ---
+pydantic>=2.7.0
+python-dotenv>=1.0.0
+rich>=13.7.0
+typer>=0.12.0
+loguru>=0.7.2
+aiohttp>=3.9.0
+websockets>=12.0
+Asyncio>=3.4.3
+tenacity>=8.3.0
+tqdm>=4.66.0
+
+# --- Audio ---
+librosa>=0.10.2
+pydub>=0.25.1
+
+# --- 3D / Geometry ---
+open3d>=0.18.0
+trimesh>=4.3.0
