@@ -1,0 +1,27 @@
+# Secrets
+.env
+.env.local
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Omniverse
+.nvidia-omniverse/
+*.usd.bak
+*.usdc.bak
+_temp/
+
+# GPU
+*.pt
+*.bin
+*.safetensors

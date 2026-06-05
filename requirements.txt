@@ -1,3 +1,26 @@
+# NVIDIA Resource Suite dependencies
+
+# HTTP client & server
 fastapi>=0.110.0
-uvicorn>=0.29.0
+uvicorn[standard]>=0.29.0
+requests>=2.31.0
+httpx>=0.27.0
+
+# Data / config
 pydantic>=2.0.0
+python-dotenv>=1.0.0
+
+# NVIDIA Omniverse (optional — install if using Omniverse)
+# omni-client>=2.0.0
+# usd-core>=24.3
+
+# CUDA / GPU monitoring (optional — install if on NVIDIA GPU host)
+# pynvml>=11.5.0
+# gpustat>=1.1.1
+
+# MCP server
+# (uses stdlib only — no extra packages needed for mcp_server/)
+
+# Testing
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
